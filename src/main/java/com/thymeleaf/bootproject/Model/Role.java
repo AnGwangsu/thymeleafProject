@@ -16,6 +16,6 @@ public class Role {
 
     private String authname;
 
-    @ManyToMany(mappedBy = "roles")  //RoleVO와 연결
+    @ManyToMany(mappedBy = "roles")  //UserVO에 객체와 연결 상대방 조인되는 테이블까지 양방향 매핑
     private List<UserVO> users;
 }
