@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header :: head('List')">
+</head>
+<body>
+    <!--header-->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="common/header :: menu('list')">
+    </nav>
+
+    <!--main-->
+    <div class="container">
+        <h1>Board</h1>
+        <div>게시글 갯수:<span th:text="${boards.totalElements}"></span></div>
+        <form class="form-inline d-flex justify-content-end" method="GET" th:action="@{/board/list}">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="searchText" class="sr-only">Search</label>
+                <input type="text" class="form-control" id="searchText" name="searchText"
+                       th:value="${param.searchText}" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-light mb-2">검색</button>
+        </form>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${boards}">
+                    <td th:text="${board.id}"></td>
+                    <td><a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}"></a></td>
+                    <td>홍길동</td>
+                </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${1 == boards.pageable.pageNumber + 1} ? 'disabled'">
+                    <a class="page-link" href="#" th:href="@{/board/list(page=${boards.pageable.pageNumber - 1},searchText=${param.searchText})}" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li class="page-item" th:classappend="${i == boards.pageable.pageNumber + 1} ? 'disabled'"
+                    th:each="i: ${#numbers.sequence(startPage,endPage)}">
+                    <a class="page-link" href="#" th:href="@{/board/list(page=${i - 1},searchText=${param.searchText})}" th:text="${i}">1</a></li>
+                <li class="page-item" th:classappend="${boards.totalPages == boards.pageable.pageNumber + 1} ? 'disabled'">
+                    <a class="page-link" href="#" th:href="@{/board/list(page=${boards.pageable.pageNumber + 1},searchText=${param.searchText})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="text-right">
+           <a type="button" class="btn btn-primary"  th:href="@{/board/form}" style="color: white; text-decoration: none">글쓰기</a>
+        </div>
+    </div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
